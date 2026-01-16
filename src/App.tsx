@@ -1,5 +1,6 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useState } from "react";
+import { Routes, Route } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "./context/AuthContext.tsx";
 import Home from "./pages/Home";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
@@ -14,36 +15,37 @@ export interface User {
 }
 
 function App() {
-  const [user, setUser] = useState<User | null>(null);
+  const { user, loading } = useContext(AuthContext);
 
+  if (loading) {
+    return <div className="text-white p-6">Loading...</div>;
+  }
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login setUser={setUser} />} />
-        <Route path="/register" element={<SignUp setUser={setUser} />} />
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Login  />} />
+      <Route path="/register" element={<SignUp />} />
 
-        <Route
-          path="/Admin"
-          element={
-            <ProtectedRoute user={user} allowedRoles={["Admin"]}>
-              <AdminDashboard />
-            </ProtectedRoute>
-          }
-        />
+      <Route
+        path="/admin"
+        element={
+          <ProtectedRoute user={user} allowedRoles={["Admin"]}>
+            <AdminDashboard />
+          </ProtectedRoute>
+        }
+      />
 
-        <Route
-          path="/Technician"
-          element={
-            <ProtectedRoute user={user} allowedRoles={["Technician"]}>
-              <TechDashboard />
-            </ProtectedRoute>
-          }
-        />
+      <Route
+        path="/technician"
+        element={
+          <ProtectedRoute user={user} allowedRoles={["Technician"]}>
+            <TechDashboard />
+          </ProtectedRoute>
+        }
+      />
 
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </Router>
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   );
 }
 

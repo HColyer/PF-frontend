@@ -1,13 +1,12 @@
-import type User from "../App";
+import { AuthContext } from "../context/AuthContext.tsx";
+import { useContext } from "react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/pestflowlogo.png";
 
 // Props passed into the SignUp component
 // setUser is used to update global app state after signup
-interface SignUpProps {
-  setUser: React.Dispatch<React.SetStateAction<User | null>>;
-}
+
 
 // Shape of the user object stored in app state
 interface User {
@@ -25,7 +24,8 @@ interface SignUpFormData {
   role: "Admin" | "Technician";
 }
 
-const SignUp: React.FC<SignUpProps> = ({ setUser }) => {
+const SignUp: React.FC = () => {
+  const { setUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
   // Form state
@@ -93,16 +93,14 @@ const SignUp: React.FC<SignUpProps> = ({ setUser }) => {
       } = await res.json();
 
       // Store JWT for authenticated requests
-      localStorage.setItem("token", data.token);
-
-      // Update global user state
+      localStorage.setItem("token", JSON.stringify({ token: data.token }));
       setUser({
         role: data.role,
         name: data.name,
       });
 
       // Redirect admin after successful signup
-      navigate("/Admin");
+      navigate("/admin");
     } catch (err) {
       console.error("Signup failed:", err);
     }
@@ -167,6 +165,7 @@ const SignUp: React.FC<SignUpProps> = ({ setUser }) => {
         >
           Sign Up
         </button>
+        <Link className="border-4 border-white py-2 text-center mt-2" to="/">Back to Home</Link>
       </form>
     </div>
   );

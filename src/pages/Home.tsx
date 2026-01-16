@@ -1,7 +1,23 @@
 import { Link } from "react-router-dom";
 import logo from "../assets/pestflowlogo.png";
+import { useContext, useEffect } from "react";
+import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if(user) {
+    const route = user.role === "Admin" ? "/admin" : "/technician"
+    console.log(user)
+    navigate(route)
+    }
+  })
+  
+  
+
   return (
     <div className="custom-bg-color min-h-screen flex flex-col text-white p-6 px-10">
       <nav className="flex justify-between mb-4 mx-auto">

@@ -1,15 +1,13 @@
-import type { User } from "../App";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { AuthContext } from "../context/AuthContext.tsx";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/pestflowlogo.png";
 
 const API_URL = "https://localhost:7110/api";
 
-interface LoginProps {
-  setUser: React.Dispatch<React.SetStateAction<User | null>>;
-}
 
-export default function Login({ setUser }: LoginProps) {
+export default function Login() {
+  const { setUser } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -45,9 +43,8 @@ export default function Login({ setUser }: LoginProps) {
         role: data.role,
         name: data.name,
       });
-
       // ✅ redirect by role
-      navigate(data.role === "Admin" ? "/Admin" : "/Technician");
+      navigate(data.role === "Admin" ? "/admin" : "/technician");
     } catch (err) {
       setError((err as Error).message);
     }

@@ -71,3 +71,36 @@ export default defineConfig([
   },
 ])
 ```
+Pestflow Frontend
+
+The frontend of Pestflow is a full-stack work management platform for pest control businesses. It is built with React and Tailwind CSS, connecting to the ASP.NET Core backend API to provide user authentication, role-based access, and management of work orders.
+
+Tech Stack
+
+Framework: React
+
+Language: JavaScript / TypeScript
+
+Styling: Tailwind CSS
+
+State Management: React hooks and Context API
+
+Routing: React Router
+
+Tools: VS Code, Git, GitHub
+
+Features
+
+Responsive, mobile-first UI
+
+User authentication with JWT
+
+Role-based access control (Admin / Technician)
+
+CRUD operations for work orders
+
+Forms and validation for creating/editing work orders
+
+Protected routes and state management
+
+Integration with backend API

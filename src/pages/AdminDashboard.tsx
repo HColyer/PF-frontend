@@ -1,73 +1,69 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ContractForm from "../components/WorkOrderForm";
 import SignUpForm from "../components/SignUpForm";
 import ContactContainer from "../components/ContractList";
 import logo from "../assets/pestflowlogo.png";
 import TechnicianList from "../components/TechnicianList";
-
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUserPlus, faFileCirclePlus } from "@fortawesome/free-solid-svg-icons";
 
 
 const AdminDashboard = () => {
-  const [isContractFormOpen, setIsContractFormOpen] = useState(false);  
+  const [isContractFormOpen, setIsContractFormOpen] = useState(false);
   const [isTechFormOpen, setIsTechFormOpen] = useState(false);
   const [isContactContainerOpen, setIsContactContainerOpen] = useState(false);
   const [isTechContainerOpen, setIsTechContainerOpen] = useState(false);
-  const [username, setUsername] = useState("Admin User");
+  const { user } = useContext(AuthContext);
 
-  useEffect(() => {
-    // Fetch admin user details from API or local storage
-    const fetchUserDetails = async () => {
-      const res = await fetch("https://localhost:7110/api/auth/me", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        setUsername(data.name.toUpperCase());
-      } else {
-        setUsername("something went wrong");
-      }
-    };
-    fetchUserDetails();
-  }, []);
-  
   return (
-  <div className="bg-emerald-600">
-    <nav>
-      <img className="w-50 h-50" src={logo} alt="Logo" />
-    </nav>
-    <h1>Welcome {username}</h1>
-    {/* Buttons to open forms */}
-    <button onClick={() => setIsContractFormOpen(!isContractFormOpen)}>Add Contract</button>
-    <button onClick={() => setIsTechFormOpen(!isTechFormOpen)}>Add Technician</button>
-    <button onClick={() => setIsContactContainerOpen(!isContactContainerOpen)}>View Contracts</button>
-    <button onClick={() => setIsTechContainerOpen(!isTechContainerOpen)}>View Techs</button>
+    <div className="custom-bg-color min-h-screen text-white flex flex-col px-12">
+      <nav className="flex justify-between items-center py-4">
+        <img className="size-32" src={logo} alt="Logo" />
+        {/* Buttons to open forms */}
+        <div>
+          <button onClick={() => setIsContractFormOpen(!isContractFormOpen)}>
+            <FontAwesomeIcon icon={faFileCirclePlus} />
+          </button>
+          <button onClick={() => setIsTechFormOpen(!isTechFormOpen)}>
+            <FontAwesomeIcon icon={faUserPlus} />
+          </button>
+          <button
+            onClick={() => setIsContactContainerOpen(!isContactContainerOpen)}
+          >
+            Contracts
+          </button>
+          <button onClick={() => setIsTechContainerOpen(!isTechContainerOpen)}>
+            Technicians
+          </button>
+        </div>
+      </nav>
+      <h1>
+        Welcome {user?.name && user.name[0].toUpperCase() + user.name.slice(1)}
+      </h1>
 
-    {isContractFormOpen && (
-      <div>
-        <ContractForm />
-      </div>
-    )}
-    {isTechFormOpen && (
-      <div>
-         <SignUpForm />
-      </div>
-    )}
-    {isContactContainerOpen && (
-      <div>
-        <ContactContainer />
-      </div>
-    )}
-    {isTechContainerOpen && (
-      <div>
-        <TechnicianList />
-      </div>
-    )}
-
-  </div>
+      {isContractFormOpen && (
+        <div>
+          <ContractForm />
+        </div>
+      )}
+      {isTechFormOpen && (
+        <div>
+          <SignUpForm />
+        </div>
+      )}
+      {isContactContainerOpen && (
+        <div>
+          <ContactContainer />
+        </div>
+      )}
+      {isTechContainerOpen && (
+        <div>
+          <TechnicianList />
+        </div>
+      )}
+    </div>
   );
 };
 

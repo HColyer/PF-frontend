@@ -4,16 +4,6 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/pestflowlogo.png";
 
-// Props passed into the SignUp component
-// setUser is used to update global app state after signup
-
-
-// Shape of the user object stored in app state
-interface User {
-  role: "Admin" | "Technician";
-  name: string;
-}
-
 // Local form state shape
 // passwordReentered is frontend-only for validation
 interface SignUpFormData {
